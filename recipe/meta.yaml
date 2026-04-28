@@ -1,0 +1,53 @@
+{% set name = "py-deviceid" %}
+{% set version = "0.1.1" %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_')}}-{{ version }}.tar.gz
+  sha256: c3e7577ada23666e7f39e69370dfdaa76fe9de79c02635376d6aa0229bfa30e3
+
+build:
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true  # [py<38]
+
+requirements:
+  host:
+    - pip
+    - python
+    - wheel
+    - setuptools
+  run:
+    - python
+
+test:
+  source_files:
+    - tests
+  imports:
+    - deviceid
+  commands:
+    - pip check
+    - pytest -v tests
+  requires:
+    - pip
+    - pytest
+    - mock
+
+about:
+  home: https://github.com/microsoft/py-deviceid
+  summary: A simple library to get or create a unique device id for a device in Python.
+  license: MIT
+  license_file: LICENSE.txt
+  license_family: MIT
+  description: |
+    Device ID for Python - deviceid provides a device ID for a given system, based on the DevDeviceId specification.
+  doc_url: https://github.com/microsoft/py-deviceid/blob/main/README.md
+  dev_url: https://github.com/microsoft/py-deviceid
+  
+
+extra:
+  recipe-maintainers:
+    - janjagusch
